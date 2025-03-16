@@ -1,0 +1,53 @@
+@media (max-width: 480px) {
+  /* Header */
+  .hero-header {
+    margin: 90%;
+  }
+  .scroll {
+    margin: -15% auto;
+  }
+  /* About */
+  .about-wrapper {
+    height: auto;
+    width: 90%;
+    flex-direction: column;
+  }
+  .content-sub {
+    margin: 0 auto;
+  }
+  .about-wrapper > img {
+    height: 35vh;
+  }
+  .about-text {
+    padding: 0.6rem 1rem;
+  }
+  /* Projects */
+  .carousel-item {
+    --width: clamp(250px, 30vw, 300px);
+    --height: clamp(350px, 40vw, 400px);
+  }
+  /* Contact */
+  .hover span {
+    display: none;
+  }
+  .hover::after {
+    content: "Tap";
+  }
+  .fa-bounce {
+    margin-top: 40px;
+  }
+  /* Footer */
+  .footer:hover {
+    height: 66%;
+  }
+  .footer #container {
+    height: 61vh;
+  }
+  .footer #cont {
+    right: auto;
+    width: fit-content;
+  }
+  .footer_center {
+    width: 24rem;
+  }
+}

@@ -1,0 +1,147 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --ff-primary: "Raleway", serif;
+  --ff-secondary: "Lora", serif;
+
+  --fw-reg: 400;
+  --fw-bold: 700;
+
+  --white: #fff;
+  --color-dark: #303030;
+  --color-accent: #9d9b80;
+
+  --fs-h1: 3rem;
+  --fs-h2: 2rem;
+  --fs-body: 1rem;
+
+  --size10: 0.625rem;
+  --size16: 1rem;
+  --size20: 1.25rem;
+  --size30: 1.875rem;
+  --size35: 2.188rem;
+}
+
+/* General styles */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  width: 100%;
+  display: block;
+  overflow-x: hidden;
+  font-family: var(--ff-secondary);
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+ul {
+  list-style-type: none;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 1em 2.5em;
+  background: var(--color-accent);
+  color: var(--color-light);
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.125rem;
+  font-weight: var(--fw-bold);
+  transition: transform 200ms ease-in-out;
+  border-radius: 0.5rem;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.6);
+}
+.btn:hover {
+  transform: scale(1.1);
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+  line-height: 1;
+  margin: 0;
+}
+h1 {
+  font-size: var(--fs-h1);
+}
+h2 {
+  font-size: var(--fs-h2);
+}
+h3 {
+  font-size: var(--fs-h3);
+}
+
+/* ParallaxContent */
+.content-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-flow: column nowrap;
+  color: var(--white);
+  text-transform: uppercase;
+  transform: translateY(40vh);
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: all 1.7s cubic-bezier(0.22, 0.44, 0, 1);
+}
+.content-title {
+  font-size: 6vh;
+  line-height: 1.4;
+  margin: 0 auto;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.6);
+}
+.content-sub {
+  font-size: 2vh;
+  line-height: 1.4;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+/* Animation Text*/
+.hidden {
+  opacity: 0;
+  transition: all 1s;
+}
+.show {
+  opacity: 1;
+}
+
+/* Cursor Style */
+.cursor {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  --size: 40px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin: calc(var(--size) * -0.5) 0 0 calc(var(--size) * -0.5);
+  transition: transform 0.85s cubic-bezier(0, 0.02, 0, 1);
+  display: none;
+  pointer-events: none;
+
+  @media (pointer: fine) {
+    display: block;
+  }
+}
+.cursor2 {
+  --size: 2px;
+  transition-duration: 0.7s;
+}
