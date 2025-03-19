@@ -1,39 +1,25 @@
 // ------------- VARIABLES ------------- //
 let ticking = false;
 const isFirefox = /Firefox/i.test(navigator.userAgent);
-const scrollSensitivitySetting = 30; // Increase/decrease this number to change sensitivity to trackpad gestures (up = less sensitive; down = more sensitive)
-const slideDurationSetting = 600; // Amount of time for which slide is "locked"
+const scrollSensitivitySetting = 30; // Sensitivity for trackpad gestures
+const slideDurationSetting = 600; // Duration for which slide is "locked"
 let currentSlideNumber = 0;
 const backgrounds = document.querySelectorAll(".background");
 const totalSlideNumber = backgrounds.length;
 
 // ------------- DETERMINE DELTA/SCROLL DIRECTION ------------- //
-function parallaxScroll(evt) {
-  let delta;
-  if (isFirefox) {
-    // Set delta for Firefox
-    delta = evt.detail * -120;
-  } else {
-    // Set delta for all other browsers
-    delta = evt.wheelDelta;
-  }
-
+function parallaxScroll(delta) {
   if (!ticking) {
-    if (delta <= -scrollSensitivitySetting) {
-      // Down scroll
+    if (delta >= scrollSensitivitySetting && currentSlideNumber < totalSlideNumber - 1) {
+      // Up scroll (swipe up)
       ticking = true;
-      if (currentSlideNumber !== totalSlideNumber - 1) {
-        currentSlideNumber++;
-        nextItem();
-      }
+      currentSlideNumber++;
+      nextItem();
       slideDurationTimeout(slideDurationSetting);
-    }
-    if (delta >= scrollSensitivitySetting) {
-      // Up scroll
+    } else if (delta <= -scrollSensitivitySetting && currentSlideNumber > 0) {
+      // Down scroll (swipe down)
       ticking = true;
-      if (currentSlideNumber !== 0) {
-        currentSlideNumber--;
-      }
+      currentSlideNumber--;
       previousItem();
       slideDurationTimeout(slideDurationSetting);
     }
@@ -42,42 +28,67 @@ function parallaxScroll(evt) {
 
 // ------------- SET TIMEOUT TO TEMPORARILY "LOCK" SLIDES ------------- //
 function slideDurationTimeout(slideDuration) {
-  setTimeout(function () {
+  setTimeout(() => {
     ticking = false;
   }, slideDuration);
 }
 
-// ------------- ADD EVENT LISTENER ------------- //
+// ------------- ADD EVENT LISTENERS ------------- //
 const mousewheelEvent = isFirefox ? "DOMMouseScroll" : "wheel";
-window.addEventListener(mousewheelEvent, throttle(parallaxScroll, 60), false);
+window.addEventListener(mousewheelEvent, throttle((e) => {
+  const delta = e.deltaY || -e.detail; // Get delta for scrolling
+  parallaxScroll(delta);
+}, 60), false);
+
+// Touch event handling
+let initialTouchY = null;
+
+window.addEventListener("touchstart", (e) => {
+  initialTouchY = e.touches[0].clientY; // Store the initial touch position
+}, { passive: false });
+
+window.addEventListener("touchmove", (e) => {
+  const currentTouchY = e.touches[0].clientY; // Get the current touch position
+  const deltaY = initialTouchY - currentTouchY; // Calculate the change in Y
+
+  // Check if the swipe is significant enough to trigger parallax
+  if (Math.abs(deltaY) > scrollSensitivitySetting) {
+    e.preventDefault(); // Prevent default scrolling
+    parallaxScroll(deltaY); // Call parallaxScroll with the delta
+  }
+}, { passive: false });
+
+window.addEventListener("touchend", () => {
+  initialTouchY = null; // Reset the initial touch position
+});
 
 // ------------- SLIDE MOTION ------------- //
 function nextItem() {
-  const previousSlide = backgrounds[currentSlideNumber - 1];
-  previousSlide.classList.remove("up-scroll");
-  previousSlide.classList.add("down-scroll");
+  if (currentSlideNumber > 0) {
+    const previousSlide = backgrounds[currentSlideNumber - 1];
+    previousSlide.classList.remove("up-scroll");
+    previousSlide.classList.add("down-scroll");
+  }
 }
 
 function previousItem() {
-  const currentSlide = backgrounds[currentSlideNumber];
-  currentSlide.classList.remove("down-scroll");
-  currentSlide.classList.add("up-scroll");
+  if (currentSlideNumber < totalSlideNumber - 1) {
+    const currentSlide = backgrounds[currentSlideNumber];
+    currentSlide.classList.remove("down-scroll");
+    currentSlide.classList.add("up-scroll");
+  }
 }
 
-// Text Animation
+// ------------- TEXT ANIMATION ------------- //
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("show");
-    } else {
-      entry.target.classList.remove("show");
-    }
+    entry.target.classList.toggle("show", entry.isIntersecting);
   });
 });
 const hiddenElm = document.querySelectorAll(".hidden");
 hiddenElm.forEach((el) => observer.observe(el));
 
-// Section 3 Carousel
+// ------------- SECTION 3 CAROUSEL ------------- //
 let progress = 10;
 let startX = 0;
 let active = 0;
@@ -85,11 +96,9 @@ let isDown = false;
 const speedWheel = 0.02;
 const speedDrag = -0.1;
 
-// Get Z
+// Get Z-index for carousel items
 const getZindex = (array, index) =>
-  array.map((_, i) =>
-    index === i ? array.length : array.length - Math.abs(index - i)
-  );
+  array.map((_, i) => (index === i ? array.length : array.length - Math.abs(index - i)));
 
 // Items
 const items = document.querySelectorAll(".carousel-item");
@@ -101,7 +110,7 @@ const displayItems = (item, index, active) => {
   item.style.setProperty("--active", (index - active) / items.length);
 };
 
-// Animate
+// Animate carousel items
 const animate = () => {
   progress = Math.max(0, Math.min(progress, 100));
   active = Math.floor((progress / 100) * (items.length - 1));
@@ -118,7 +127,7 @@ items.forEach((item, i) => {
   });
 });
 
-// Handlers
+// ------------- HANDLERS ------------- //
 const handleWheel = (e) => {
   const wheelProgress = e.deltaY * speedWheel;
   progress += wheelProgress;
@@ -126,13 +135,12 @@ const handleWheel = (e) => {
 };
 
 const handleMouseMove = (e) => {
-  if (e.type === "mousemove") {
-    cursors.forEach((cursor) => {
-      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-    });
-  }
-  if (!isDown) return;
   const x = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+  cursors.forEach((cursor) => {
+    cursor.style.transform = `translate(${x}px, ${e.clientY}px)`;
+  });
+
+  if (!isDown) return;
   const mouseProgress = (x - startX) * speedDrag;
   progress += mouseProgress;
   startX = x;
@@ -148,8 +156,8 @@ const handleMouseUp = () => {
   isDown = false;
 };
 
-// Listeners
-document.addEventListener("mousewheel", handleWheel);
+// ------------- LISTENERS ------------- //
+document.addEventListener("wheel", handleWheel);
 document.addEventListener("mousedown", handleMouseDown);
 document.addEventListener("mousemove", handleMouseMove);
 document.addEventListener("mouseup", handleMouseUp);
@@ -157,7 +165,7 @@ document.addEventListener("touchstart", handleMouseDown);
 document.addEventListener("touchmove", handleMouseMove);
 document.addEventListener("touchend", handleMouseUp);
 
-// Throttle function
+// ------------- THROTTLE FUNCTION ------------- //
 function throttle(func, limit) {
   let lastFunc;
   let lastRan;
