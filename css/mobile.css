@@ -1,7 +1,7 @@
 @media (max-width: 480px) {
   /* Header */
   .hero-header {
-    margin: 90%;
+    margin: 70%;
   }
   .scroll {
     margin: -15% auto;
@@ -20,6 +20,7 @@
   }
   .about-text {
     padding: 0.6rem 1rem;
+    text-align: center;
   }
   /* Projects */
   .carousel-item {
@@ -49,5 +50,39 @@
   }
   .footer_center {
     width: 24rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-header {
+    margin: 40%;
+  }
+  .skill-icons {
+    margin: auto;
+  }
+  .scroll {
+    margin: -5% auto;
+  }
+  /* About */
+  .about-wrapper {
+    height: auto;
+    width: 90%;
+    flex-direction: column;
+  }
+  .content-sub {
+    margin: 0 auto;
+  }
+  .about-wrapper > img {
+    height: 35vh;
+  }
+  .about-text {
+    padding: 0.6rem 1rem;
+    text-align: center;
+  }
+}
+
+@media (min-width: 1600px) {
+  .photo {
+    top: 50%;
   }
 }
