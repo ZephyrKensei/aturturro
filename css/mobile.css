@@ -1,10 +1,17 @@
-@media (max-width: 480px) {
+@media (max-width: 420px) {
   /* Header */
   .hero-header {
-    margin: 70%;
+    margin: 95%;
+  }
+  .skill-icons {
+    justify-content: center;
+  }
+  .skill-icon {
+    font-size: 3rem;
+    padding: 0 10px;
   }
   .scroll {
-    margin: -15% auto;
+    display: none;
   }
   /* About */
   .about-wrapper {
@@ -50,39 +57,5 @@
   }
   .footer_center {
     width: 24rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-header {
-    margin: 40%;
-  }
-  .skill-icons {
-    margin: auto;
-  }
-  .scroll {
-    margin: -5% auto;
-  }
-  /* About */
-  .about-wrapper {
-    height: auto;
-    width: 90%;
-    flex-direction: column;
-  }
-  .content-sub {
-    margin: 0 auto;
-  }
-  .about-wrapper > img {
-    height: 35vh;
-  }
-  .about-text {
-    padding: 0.6rem 1rem;
-    text-align: center;
-  }
-}
-
-@media (min-width: 1600px) {
-  .photo {
-    top: 50%;
   }
 }
