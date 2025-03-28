@@ -23,7 +23,7 @@
     margin: 0 auto;
   }
   .about-wrapper > img {
-    height: 30vh;
+    display: none;
   }
   .about-text {
     padding: 0.6rem 1rem;
@@ -46,10 +46,13 @@
   }
   /* Footer */
   .footer {
-    bottom: 10px;
+    bottom: 30%;
   }
   .footer:hover {
-    height: 66%;
+    height: 70%;
+  }
+  .arrow {
+    top: 0%;
   }
   .footer #container {
     height: 61vh;
