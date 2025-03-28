@@ -1,7 +1,7 @@
 @media (max-width: 420px) {
   /* Header */
   .hero-header {
-    margin: 95%;
+    margin: 80%;
   }
   .skill-icons {
     justify-content: center;
@@ -23,7 +23,7 @@
     margin: 0 auto;
   }
   .about-wrapper > img {
-    height: 35vh;
+    height: 30vh;
   }
   .about-text {
     padding: 0.6rem 1rem;
@@ -45,6 +45,9 @@
     margin-top: 40px;
   }
   /* Footer */
+  .footer {
+    bottom: 10px;
+  }
   .footer:hover {
     height: 66%;
   }
