@@ -24,17 +24,17 @@
   background-color: rgba(0, 0, 0, 0.3);
 }
 .background:first-child {
-  background-image: url(../imgs/hero-bkgd.png);
+  background-image: url(../imgs/hero-bkgd.webp);
   transform: translateY(-15vh);
 }
 .background:first-child .content-wrapper {
   transform: translateY(5vh);
 }
 .background:nth-child(2) {
-  background-image: url(../imgs/about-bg.jpg);
+  background-image: url(../imgs/about-bg.webp);
 }
 .background:nth-child(3) {
-  background-image: url(../imgs/hero-bkgd.png);
+  background-image: url(../imgs/hero-bkgd.webp);
 }
 .background:nth-child(4) {
   background-image: url(https://www.dropbox.com/s/he2xr9va3itdfrt/contact_image.jpg?raw=1);
